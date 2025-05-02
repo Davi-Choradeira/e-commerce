@@ -1,71 +1,68 @@
 <template>
-    <canvas ref="starCanvas" class="star-background"></canvas>
+    <canvas ref="canvas"></canvas>
   </template>
   
   <script>
-  export default {
-    mounted() {
-      this.setupCanvas();
-      this.animateStars();
-      window.addEventListener("mousemove", this.spreadStars);
-    },
-    methods: {
-      setupCanvas() {
-        this.canvas = this.$refs.starCanvas;
-        this.ctx = this.canvas.getContext("2d");
+  import { defineComponent, onMounted, ref } from "vue";
   
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+  export default defineComponent({
+    setup() {
+      const canvas = ref(null);
   
-        this.stars = Array.from({ length: 200 }).map(() => ({
-          x: Math.random() * this.canvas.width,
-          y: Math.random() * this.canvas.height,
-          radius: Math.random() * 2.5,
-          speed: Math.random() * 0.5 + 0.2
-        }));
-      },
-      animateStars() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      onMounted(() => {
+        const ctx = canvas.value.getContext("2d");
   
-        this.stars.forEach(star => {
-          star.y += star.speed;
-          if (star.y > this.canvas.height) star.y = 0;
+        canvas.value.width = window.innerWidth;
+        canvas.value.height = window.innerHeight;
   
-          this.ctx.fillStyle = "white";
-          this.ctx.beginPath();
-          this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-          this.ctx.fill();
+        let stars = [];
+        for (let i = 0; i < 150; i++) {
+          stars.push({
+            x: Math.random() * canvas.value.width,
+            y: Math.random() * canvas.value.height,
+            radius: Math.random() * 2,
+            speed: Math.random() * 0.5 + 0.2,
+            opacity: Math.random() * 0.5 + 0.5
+          });
+        }
+  
+        function animateStars() {
+          ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+          ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+          stars.forEach(star => {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fill();
+            star.y += star.speed;
+            if (star.y > canvas.value.height) star.y = 0;
+          });
+          requestAnimationFrame(animateStars);
+        }
+  
+        animateStars();
+  
+        canvas.value.addEventListener("mousemove", (event) => {
+          stars.forEach(star => {
+            const dx = event.clientX - star.x;
+            const dy = event.clientY - star.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 100) {
+              star.x -= dx * 0.05;
+              star.y -= dy * 0.05;
+            }
+          });
         });
+      });
   
-        requestAnimationFrame(this.animateStars);
-      },
-      spreadStars(event) {
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-  
-        this.stars.forEach(star => {
-          const dx = mouseX - star.x;
-          const dy = mouseY - star.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-  
-          if (distance < 100) {
-            star.x += dx * 0.05; // 🔹 Movendo as estrelas para longe do mouse
-            star.y += dy * 0.05;
-          }
-        });
-      }
+      return { canvas };
     }
-  };
+  });
   </script>
   
   <style scoped>
-  .star-background {
-    position: fixed; /* 🔹 Garante que o fundo estrelado cubra toda a tela */
+  canvas {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: black;
-    z-index: 1; /* 🔹 Mantém as estrelas atrás do conteúdo */
   }
   </style>

@@ -1,7 +1,7 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import VueParticles from '@tsparticles/vue3';
+import { createApp } from "vue";
+import App from "./App.vue";
+import Vue3Particles from "vue3-particles";
 
 const app = createApp(App);
-app.use(VueParticles);
-app.mount('#app');
+app.use(Vue3Particles);
+app.mount("#app");
