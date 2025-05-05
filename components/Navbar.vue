@@ -1,10 +1,21 @@
 <template>
-    <nav class="bg-primary p-4 text-white flex justify-between items-center shadow-lg">
-      <h1 class="text-2xl font-bold">🚀 Loja Minimalista</h1>
+    <nav class="bg-cinzaClaro p-4 text-preto flex justify-between items-center shadow-md">
       <ul class="flex space-x-6 text-lg">
-        <li><a href="/" class="hover:text-gray-300 transition duration-300">Início</a></li>
-        <li><a href="/produtos" class="hover:text-gray-300 transition duration-300">Produtos</a></li>
-        <li><a href="/contato" class="hover:text-gray-300 transition duration-300">Contato</a></li>
+        <li class="hover-effect"><a href="/">Início</a></li>
+        <li class="hover-effect"><a href="/produtos">Produtos</a></li>
       </ul>
+      <div class="cart-icon">
+        🛒 <!-- Apenas ícone sem texto -->
+      </div>
     </nav>
   </template>
+  
+  <style>
+  .cart-icon {
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .cart-icon:hover {
+    transform: scale(1.2);
+  }
+  </style>
