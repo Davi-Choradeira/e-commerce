@@ -2,11 +2,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gelo: "#F8F9FA", // Fundo claro e profissional
-        preto: "#212529", // Texto escuro para melhor leitura
-        verdeNeon: "#39FF14", // Destaque no logo "Dev"
-        cinzaClaro: "#DEE2E6", // Bordas e detalhes sutis
-        azulBotao: "#007BFF", // Botões chamativos
+        gelo: "#1E1E1E", // Fundo escuro
+        preto: "#F8F9FA", // Texto claro
+        verdeNeon: "#39FF14", // Destaque
+        cinzaClaro: "#484848", // Bordas mais visíveis
+        azulBotao: "#1E90FF", // Botões chamativos
       },
     },
   },
