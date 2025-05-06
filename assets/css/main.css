@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+body {
+    background-color: #0A0A0A; /* Preto mais profundo e sofisticado */
+    color: #F8F9FA; /* Texto claro para contraste */
+    background-image: linear-gradient(180deg, #0A0A0A 60%, #1E1E1E 100%);
+}
