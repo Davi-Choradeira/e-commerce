@@ -1,15 +1,18 @@
 <template>
   <div class="container mx-auto p-8 flex flex-col items-center bg-gelo rounded-lg shadow-lg text-preto">
     <h2 class="text-3xl font-bold mb-4">{{ produto?.nome }}</h2>
-    
+
     <!-- Emoji do produto -->
-    <div class="text-6xl mb-6">{{ produto?.emoji }}</div> 
+    <div class="text-6xl mb-6">{{ produto?.emoji }}</div>  
 
     <p class="text-lg text-gray-300 mb-4">Preço: R$ {{ produto?.preco }}</p>
     <p class="text-sm text-gray-400 mb-6">🚀 Envio rápido! Chega em até 3 dias úteis.</p>
 
     <!-- Botão de compra -->
-    <button class="bg-verdeNeon text-black px-6 py-3 rounded-lg hover:bg-green-500 transition">
+    <button 
+      class="bg-verdeNeon text-black px-6 py-3 rounded-lg hover:bg-green-500 transition"
+      @click="adicionarAoCarrinho"
+    >
       🛒 Comprar Agora
     </button>
 
@@ -40,4 +43,23 @@ const produto = ref(produtos.find((p) => p.id == route.params.id));
 watch(() => route.params.id, (newId) => {
   produto.value = produtos.find((p) => p.id == newId);
 });
+
+// 🚀 Função para adicionar produto ao carrinho
+async function adicionarAoCarrinho() {
+  try {
+    const response = await fetch("http://localhost:3000/adicionar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome: produto.value.nome, 
+        preco: produto.value.preco 
+      })
+    });
+
+    const data = await response.json();
+    console.log("✅ Produto adicionado ao carrinho!", data.carrinho);
+  } catch (error) {
+    console.error("❌ Erro ao adicionar ao carrinho:", error);
+  }
+}
 </script>
